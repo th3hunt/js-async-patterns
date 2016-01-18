@@ -1,0 +1,23 @@
+{
+  "name": "js-async-patterns",
+  "version": "1.0.0",
+  "description": "A collection of async patterns in Javascript",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/th3hunt/js-async-patterns.git"
+  },
+  "keywords": [
+    "js",
+    "async",
+    "patterns"
+  ],
+  "author": "Stratos Pavlakis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/th3hunt/js-async-patterns/issues"
+  },
+  "homepage": "https://github.com/th3hunt/js-async-patterns#readme"
+}
