@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/th3hunt/js-async-patterns/issues"
   },
-  "homepage": "https://github.com/th3hunt/js-async-patterns#readme"
+  "homepage": "https://github.com/th3hunt/js-async-patterns#readme",
+  "devDependencies": {
+    "babel-cli": "^6.4.0"
+  }
 }
