@@ -21,6 +21,10 @@
   },
   "homepage": "https://github.com/th3hunt/js-async-patterns#readme",
   "devDependencies": {
-    "babel-cli": "^6.4.0"
+    "babel-cli": "^6.4.0",
+    "js-csp": "^0.5.0"
+  },
+  "dependencies": {
+    "thunks": "^4.1.2"
   }
 }
