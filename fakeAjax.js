@@ -1,11 +1,12 @@
 const fakeResponses = {
-  'foo.com': 'Foo Pony',
-  'bar.com': 'Bar Pony',
-  'qux.org': 'The last Pony'
+  'lotr.com/aragorn': {title: 'Aragorn, King Elessar', ancestor: 'lotr.com/arathorn'},
+  'lotr.com/arathorn': {title: 'Arathorn II, Chieftain of the Dúnedain', ancestor: 'lotr.com/arador'},
+  'lotr.com/arador': {title: 'Arador, 14th Chieftain of the Dúnedain', ancestor: 'lotr.com/<broken_link>'},
+  'lotr.com/arvedui': {title: 'The last King of Arnor'}
 };
 
 export default function fakeAjax(url, success, error) {
-  console.log(`Requesting: ${url}`);
+  console.log(`Requesting '${url}'...\n`);
 
   const randomDelay = (Math.round(Math.random() * 1E4) % 8000) + 1000;
   const response = fakeResponses[url];
