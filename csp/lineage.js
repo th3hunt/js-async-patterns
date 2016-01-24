@@ -10,7 +10,7 @@ function requestUrl(url) {
   return ch;
 }
 
-function* ancestry(url) {
+function* lineage(url) {
   let character;
   do {
     character = yield csp.take(requestUrl(url));
@@ -26,4 +26,4 @@ function* ancestry(url) {
   } while(character !== csp.CLOSED && url);
 }
 
-csp.spawn(ancestry('lotr.com/aragorn'));
+csp.spawn(lineage('lotr.com/aragorn'));
