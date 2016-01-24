@@ -24,18 +24,18 @@ function showCharacter(error, character) {
     return fetchCharacter(character.ancestor);
   }
 }
-//
-// fetchCharacter('lotr.com/aragorn')(
-//   showCharacter
-// )(
-//   showCharacter
-// )(
-//   showCharacter
-// )(
-//   showCharacter
-// )(
-//   showCharacter
-// );
+
+fetchCharacter('lotr.com/aragorn')(
+  showCharacter
+)(
+  showCharacter
+)(
+  showCharacter
+)(
+  showCharacter
+)(
+  showCharacter
+);
 
 // OR
 
