@@ -2,12 +2,12 @@ const fakeResponses = {
   'lotr.com/aragorn': {title: 'Aragorn, King Elessar', ancestor: 'lotr.com/arathorn'},
   'lotr.com/arathorn': {title: 'Arathorn II, Chieftain of the Dúnedain', ancestor: 'lotr.com/arador'},
   'lotr.com/arador': {title: 'Arador, 14th Chieftain of the Dúnedain', ancestor: 'lotr.com/<broken_link>'},
-  'lotr.com/arvedui': {title: 'The last King of Arnor'}
+  'lotr.com/arvedui': {title: 'The last King of Arnor'},
 
-  'eric/profile': {id: 1, name: 'Eric Cartman', friends: 3, pictures: 2, episodes: 3},
-  'eric/friends': ['Stan', 'Kyle', 'Kenny'],
-  'eric/pictures': ['avatar.jpg', '4th_grade.jpg'],
-  'eric/episodes': ['Scott Tenorman Must Die', 'Cow Days', 'A Ladder to Heaven']
+  'geeks.com/cartman': {name: 'Eric Cartman', star: false, imdbUrl: 'imdb.com/eric'},
+  'imdb.com/eric': {bio: 'Spoilt, extremely selfish and frequently seeks personal gain', quotesCount: 1000},
+  'imdb.com/eric/films': ['Scott Tenorman Must Die', 'Cow Days', 'A Ladder to Heaven'],
+  'imdb.com/eric/quotes': ['Hippies cant stand Death metal']
 };
 
 export default function fakeAjax(url, success, error) {
@@ -19,6 +19,6 @@ export default function fakeAjax(url, success, error) {
   if (response) {
     setTimeout(() => success(response), randomDelay);
   } else {
-    setTimeout(() => error(404, `${url} not found`), randomDelay);
+    setTimeout(() => error(`404, ${url} not found`), randomDelay);
   }
 }
