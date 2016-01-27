@@ -1,37 +1,48 @@
 import fakeAjax from '../fakeAjax';
 
-function onError(error) {
-  console.error('Error: ', error);
-}
+function fetchCharacter(url, onSuccess, onError) {
+  let friendsFetched = false;
+  let recordFetched  = false;
 
-fakeAjax('geeks.com/cartman', (character) => {
-  let imdbProfile;
-  let imdbFilms;
+  fakeAjax(url, (character) => {
 
-  function getQuotesIfDone() {
-    if (imdbProfile && imdbFilms) {
-      Object.assign(character, imdbProfile, {films: imdbFilms});
-
-      if (character.quotesCount > 0) {
-        fakeAjax(character.imdbUrl + '/quotes', (quotes) => {
-          Object.assign(character, {quotes});
-          console.log(character);
-        }, onError);
-
+    function getKnownForIfInfamous() {
+      if (!friendsFetched || !recordFetched) {
+        return;
+      }
+      if (character.friends < 2 && character.criminalRec) {
+        console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+        fakeAjax(character.spdbUrl + '/known_for',
+          (knownFor) => {
+            Object.assign(character, {knownFor});
+            onSuccess(character);
+          },
+          (error) => onError('customized error', error)
+        );
       } else {
-        console.log(character);
+        onSuccess(character);
       }
     }
-  }
 
-  fakeAjax(character.imdbUrl, (profile) => {
-    imdbProfile = profile;
-    getQuotesIfDone();
+    // What happens if both calls below fail?
+
+    fakeAjax(character.spdbUrl + '/friends', (friends) => {
+      Object.assign(character, {friends});
+      friendsFetched = true;
+      getKnownForIfInfamous();
+    }, onError);
+
+    fakeAjax(character.spdbUrl + '/record', (criminalRec) => {
+      Object.assign(character, {criminalRec});
+      recordFetched = true;
+      getKnownForIfInfamous();
+    }, onError);
+
   }, onError);
 
-  fakeAjax(character.imdbUrl + '/films', (films) => {
-    imdbFilms = films;
-    getQuotesIfDone();
-  }, onError);
+}
 
-}, onError)
+fetchCharacter('imdb.com/cartman',
+  (eric) => console.log(eric),
+  (error) => console.error('Error: %s', error)
+);

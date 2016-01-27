@@ -3,31 +3,35 @@ import Rx from 'rx';
 
 const fetch = Rx.Observable.fromNodeCallback(nodeAjax);
 
-Rx.Observable
-  .just('geeks.com/cartman')
-  .flatMapLatest(url => fetch(url))
-  .flatMapLatest(
-    (character) => {
-      return Rx.Observable.combineLatest(
-        fetch(character.imdbUrl),
-        fetch(character.imdbUrl + '/films')
-      ).map((results) => { // results == [imdb_profile, films]
-        return Object.assign(character, results[0], {films: results[1]});
-      });
-    }
-  )
-  .flatMapLatest(
-    (character) => {
-      if (character.quotesCount > 0) {
-        return fetch(character.imdbUrl + '/quotes')
-          // .onErrorResumeNext(Rx.Observable.just('quotes not available'))
-          .map(quotes => Object.assign(character, {quotes}));
+function fetchCharacter(url) {
+  return Rx.Observable
+    .just(url)
+    .flatMapLatest(url => fetch(url))
+    .flatMapLatest(
+      (character) => {
+        return Rx.Observable.combineLatest(
+          fetch(character.spdbUrl + '/friends'),
+          fetch(character.spdbUrl + '/record')
+        ).map(([friends, criminalRec]) => {
+          return Object.assign(character, {friends, criminalRec});
+        });
       }
-      return Rx.Observable.just(character);
-    }
-  )
-  // .timeout(2000)
-  .subscribe(
-    (character) => console.log(character),
-    (error) => console.log('Error: %s', error)
-  );
+    )
+    .flatMapLatest(
+      (character) => {
+        if (character.friends < 2 && character.criminalRec) {
+          console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+          return fetch(character.spdbUrl + '/known_for')
+            // .onErrorResumeNext(Rx.Observable.just('quotes not available'))
+            .map(knownFor => Object.assign(character, {knownFor}));
+        }
+        return Rx.Observable.just(character);
+      }
+    )
+    // .timeout(2000)
+}
+
+fetchCharacter('imdb.com/cartman').subscribe(
+  (eric) => console.log(eric),
+  (error) => console.error('Error: %s', error)
+);

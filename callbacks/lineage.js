@@ -1,7 +1,7 @@
 import fakeAjax from '../fakeAjax.js';
 
 function onError(status, text) {
-  console.log('Error: %s', text);
+  console.error('Error: %s', text);
   console.log('Falling back to %s', 'lotr.com/arvedui');
   fakeAjax('lotr.com/arvedui', character => console.log('> %s', character.title));
 }

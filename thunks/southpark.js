@@ -11,54 +11,64 @@ const thunkedAjax = thunk.thunkify(function (url, callback) {
   );
 });
 
-function onError(error) {
-  console.error('Error: ', error);
-}
+const fetchCharacter = thunk.thunkify(function (url, callback) {
+  let friendsFetched = false;
+  let recordFetched  = false;
 
-const getCartman = thunkedAjax('geeks.com/cartman');
+  const getImdbProfile = thunkedAjax(url);
 
-getCartman((error, character) => {
-  let profileFetched;
-  let filmsFetched;
-
-  function getQuotesIfDone() {
-    if (profileFetched && filmsFetched) {
-      if (character.quotesCount > 0) {
-        const getQuotes = thunkedAjax(character.imdbUrl + '/quotes');
-        getQuotes((error, quotes) => {
+  getImdbProfile((error, character) => {
+    function getKnownForIfInfamous() {
+      if (!friendsFetched || !recordFetched) {
+        return;
+      }
+      if (character.friends < 2 && character.criminalRec) {
+        console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+        const getKnownFor = thunkedAjax(character.spdbUrl + '/known_for');
+        getKnownFor((error, knownFor) => {
           if (error) {
-            onError(error);
+            callback(error);
           } else {
-            Object.assign(character, {quotes});
-            console.log(character);
+            Object.assign(character, {knownFor});
+            callback(null, character);
           }
         });
       } else {
-        console.log(character);
+        callback(null, character);
       }
     }
+
+    const getFriends = thunkedAjax(character.spdbUrl + '/friends');
+
+    getFriends((error, friends) => {
+      if (error) {
+        return callback(error);
+      }
+      friendsFetched = true;
+      Object.assign(character, {friends});
+      getKnownForIfInfamous();
+    });
+
+    const getRecord = thunkedAjax(character.spdbUrl + '/record');
+
+    getRecord((error, criminalRec) => {
+      if (error) {
+        return callback(error);
+      }
+      recordFetched = true;
+      Object.assign(character, {criminalRec});
+      getKnownForIfInfamous();
+    });
+
+  });
+});
+
+const fetchCartman = fetchCharacter('imdb.com/cartman');
+
+fetchCartman((error, eric) => {
+  if (error) {
+    console.error('Error: %s', error);
+  } else {
+    console.log(eric);
   }
-
-  const getImdbProfile = thunkedAjax(character.imdbUrl);
-
-  getImdbProfile((error, profile) => {
-    if (error) {
-      onError(error);
-    }
-    profileFetched = true;
-    Object.assign(character, profile);
-    getQuotesIfDone();
-  });
-
-  const getImdbFilms = thunkedAjax(character.imdbUrl + '/films');
-
-  getImdbFilms((error, films) => {
-    if (error) {
-      onError(error);
-    }
-    filmsFetched = true;
-    Object.assign(character, {films});
-    getQuotesIfDone();
-  });
-
-}, onError)
+});
