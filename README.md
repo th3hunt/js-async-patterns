@@ -28,4 +28,6 @@ Repeated application of the same async step until a terminating condition is met
 This is also a sequence of async steps but one that can be solved using
 recursion or loop depending on the async mechanism employed.
 
-We need to print out Aragorn's lineage. A fictitious `lotr.com/:name` API provides us with `{title, ancestor}` records with the `title` being the title of the LOTR hero and `ancestor` the name of their ancestor. We are given the Aragorn's one `lotr.com/aragorn` to start with.
+We need to print out Aragorn's lineage. A fictitious `lotr.com/:name` API provides us with `{title, ancestor}` records with the `title` being the title of the LOTR hero and `ancestor` the name of their ancestor.
+
+We are given the Aragorn's one `lotr.com/aragorn` to start with.
