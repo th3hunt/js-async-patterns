@@ -1,4 +1,5 @@
 import fakeAjax from '../fakeAjaxAsPromise';
+import logger from '../logger';
 
 function fetchCharacter(url) {
   return fakeAjax(url)
@@ -14,7 +15,7 @@ function fetchCharacter(url) {
 
     .then((character) => {
       if (character.friends < 2 && character.criminalRec !== null) {
-        console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+        logger.strong('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
         return fakeAjax(character.spdbUrl + '/known_for')
           .then((knownFor) => Object.assign(character, {knownFor}));
       }
@@ -23,5 +24,5 @@ function fetchCharacter(url) {
 }
 
 fetchCharacter('imdb.com/cartman')
-  .then((eric) => console.log(eric))
-  .catch((error) => console.error('Error: %s', error));
+  .then((eric) => logger.success(eric))
+  .catch((error) => logger.error(error));

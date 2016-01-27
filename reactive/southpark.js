@@ -1,5 +1,6 @@
 import nodeAjax from '../nodeAjax';
 import Rx from 'rx';
+import logger from '../logger';
 
 const fetch = Rx.Observable.fromNodeCallback(nodeAjax);
 
@@ -20,7 +21,7 @@ function fetchCharacter(url) {
     .flatMapLatest(
       (character) => {
         if (character.friends < 2 && character.criminalRec) {
-          console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+          logger.strong('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
           return fetch(character.spdbUrl + '/known_for')
             // .onErrorResumeNext(Rx.Observable.just('quotes not available'))
             .map(knownFor => Object.assign(character, {knownFor}));
@@ -32,6 +33,6 @@ function fetchCharacter(url) {
 }
 
 fetchCharacter('imdb.com/cartman').subscribe(
-  (eric) => console.log(eric),
-  (error) => console.error('Error: %s', error)
+  (eric) => logger.success(eric),
+  (error) => logger.error('Error: %s', error)
 );

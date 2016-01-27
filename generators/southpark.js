@@ -1,4 +1,5 @@
 import fakeAjax from '../fakeAjaxAsPromise';
+import logger from '../logger';
 
 async function fetchCharacter(url) {
   try {
@@ -11,7 +12,7 @@ async function fetchCharacter(url) {
     Object.assign(character, {friends, criminalRec});
 
     if (friends < 2 && criminalRec !== null) {
-      console.log('Friends: %s. CR: %s  => infamous!\n', friends, criminalRec);
+      logger.strong('Friends: %s. CR: %s  => infamous!\n', friends, criminalRec);
       const knownFor = await fakeAjax(character.spdbUrl + '/known_for');
       Object.assign(character, {knownFor});
     }
@@ -24,5 +25,5 @@ async function fetchCharacter(url) {
 }
 
 fetchCharacter('imdb.com/cartman')
-  .then((eric) => console.log(eric))
-  .catch((error) => console.error('Error: %s', error));
+  .then((eric) => logger.success(eric))
+  .catch((error) => logger.error(error));

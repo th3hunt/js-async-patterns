@@ -13,9 +13,9 @@ const fakeResponses = {
 };
 
 export default function fakeAjax(url, success, error) {
-  console.log(`Requesting '${url}'...\n`);
+  console.log(`Requesting '${url}'...\n`.yellow);
 
-  const randomDelay = (Math.round(Math.random() * 1E4) % 8000) + 1000;
+  const randomDelay = (Math.round(Math.random() * 1E4) % 4000) + 1000;
   const response = fakeResponses[url];
 
   if (response !== void(0)) {

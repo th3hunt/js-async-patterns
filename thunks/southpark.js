@@ -1,5 +1,6 @@
 import fakeAjax from '../fakeAjax';
 import thunks from 'thunks';
+import logger from '../logger';
 
 const thunk = thunks();
 
@@ -23,7 +24,7 @@ const fetchCharacter = thunk.thunkify(function (url, callback) {
         return;
       }
       if (character.friends < 2 && character.criminalRec) {
-        console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+        logger.strong('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
         const getKnownFor = thunkedAjax(character.spdbUrl + '/known_for');
         getKnownFor((error, knownFor) => {
           if (error) {
@@ -67,8 +68,8 @@ const fetchCartman = fetchCharacter('imdb.com/cartman');
 
 fetchCartman((error, eric) => {
   if (error) {
-    console.error('Error: %s', error);
+    logger.error('Error: %s', error);
   } else {
-    console.log(eric);
+    logger.success(eric);
   }
 });

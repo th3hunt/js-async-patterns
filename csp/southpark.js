@@ -1,5 +1,6 @@
 import fakeAjax from '../fakeAjax';
 import csp from 'js-csp';
+import logger from '../logger';
 
 function fakeAjaxAsChannel(url) {
   const ch = csp.chan();
@@ -47,7 +48,7 @@ function* fetchCharacter(url) {
     });
 
     if (friends < 2 && criminalRec) {
-      console.log('Friends: %s. CR: %s  => infamous!\n', friends, criminalRec);
+      logger.strong('Friends: %s. CR: %s  => infamous!\n', friends, criminalRec);
       const knownFor = yield csp.take(fakeAjaxAsChannel(character.spdbUrl + '/known_for'));
       Object.assign(character, {
         knownFor
@@ -65,8 +66,8 @@ const characterChannel = csp.spawn(fetchCharacter('imdb.com/cartman'));
 
 csp.takeAsync(characterChannel, (eric) => {
   if (eric instanceof Error) {
-    console.error(eric.stack);
+    logger.error(eric.stack);
   } else {
-    console.log(eric);
+    logger.success(eric);
   }
 });

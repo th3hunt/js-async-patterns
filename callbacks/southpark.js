@@ -1,4 +1,5 @@
 import fakeAjax from '../fakeAjax';
+import logger from '../logger';
 
 function fetchCharacter(url, onSuccess, onError) {
   let friendsFetched = false;
@@ -11,7 +12,7 @@ function fetchCharacter(url, onSuccess, onError) {
         return;
       }
       if (character.friends < 2 && character.criminalRec) {
-        console.log('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
+        logger.strong('Friends: %s. CR: %s  => infamous!\n', character.friends, character.criminalRec);
         fakeAjax(character.spdbUrl + '/known_for',
           (knownFor) => {
             Object.assign(character, {knownFor});
@@ -43,6 +44,6 @@ function fetchCharacter(url, onSuccess, onError) {
 }
 
 fetchCharacter('imdb.com/cartman',
-  (eric) => console.log(eric),
-  (error) => console.error('Error: %s', error)
+  (eric) => logger.success(eric),
+  (error) => logger.error(error)
 );
