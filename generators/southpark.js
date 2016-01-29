@@ -4,6 +4,7 @@ import logger from '../logger';
 async function fetchCharacter(url) {
   try {
     const character = await fakeAjax(url);
+    
     const [friends, criminalRec] = await Promise.all([
       fakeAjax(character.spdbUrl + '/friends'),
       fakeAjax(character.spdbUrl + '/record')

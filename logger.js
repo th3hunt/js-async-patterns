@@ -10,7 +10,7 @@ export function success(object, ...args) {
 }
 
 export function info(object, ...args) {
-  console.log(stringify(object).white, ...args);
+  console.log(stringify(object).magenta, ...args);
 }
 
 export function strong(object, ...args) {

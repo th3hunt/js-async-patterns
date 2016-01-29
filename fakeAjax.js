@@ -1,3 +1,5 @@
+import logger from './logger';
+
 const fakeResponses = {
   // lineage
   'lotr.com/aragorn': {title: 'Aragorn, King Elessar', ancestor: 'lotr.com/arathorn'},
@@ -13,7 +15,7 @@ const fakeResponses = {
 };
 
 export default function fakeAjax(url, success, error) {
-  console.log(`Requesting '${url}'...\n`.yellow);
+  logger.info(`Requesting '${url}'...\n`);
 
   const randomDelay = (Math.round(Math.random() * 1E4) % 4000) + 1000;
   const response = fakeResponses[url];
