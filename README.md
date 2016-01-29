@@ -31,3 +31,12 @@ recursion or loop depending on the async mechanism employed.
 We need to print out Aragorn's lineage. A fictitious `lotr.com/:name` API provides us with `{title, ancestor}` records with the `title` being the title of the LOTR hero and `ancestor` the name of their ancestor.
 
 We are given the Aragorn's one `lotr.com/aragorn` to start with.
+
+## Running the scenarios
+
+```bash
+npm install
+babel-node <path_to_scenario>
+```
+
+
